@@ -1,20 +1,53 @@
 # Bounty Bench
 
-Documentation-only benchmark of my Bugcrowd submissions.
-No vulnerability details are disclosed; only program names and outcomes.
+## Abstract
+This report documents a personal benchmark of Bugcrowd submissions. It summarizes outcomes, payouts, and model attribution at a high level without disclosing vulnerability details. The objective is to compare performance signals between two tooling setups in a controlled, non‑disclosing format.
 
-## Snapshot (as of January 25, 2026)
-- Total submissions: 23
+## Data Source and Scope
+The dataset is derived from Bugcrowd submissions dashboard snapshots. No API export was used. The reporting window spans December 28-30, 2025 and January 12-25, 2026, with the snapshot point as of January 25, 2026. Only program names and outcome categories are recorded.
+
+## Definitions
+Outcome categories are standardized as follows:
+- Won: Accepted or paid submissions. Includes paid submissions still shown as pending/triaged.
+- Rejected: Closed without acceptance.
+- Duplicate: Marked duplicate.
+- Pending/Other: Any remaining in‑progress or unresolved states.
+
+Model attribution is assigned at the outcome level:
+- codex-5.2-xhigh: All Won and Duplicate outcomes.
+- opus 4.5 (Claude Code): All Rejected outcomes.
+- Unattributed: Pending/Other outcomes.
+
+## Methods
+The analysis uses manual extraction from the UI and aggregates counts by outcome and model attribution. Percentages are calculated against total submissions (n = 23) and rounded to the nearest whole percent.
+
+A domain-specific adjustment is applied:
+- ClickHouse submissions shown as pending/triaged are counted as Won because payment was issued.
+
+## Results
+**Table 1. Outcome summary (adjusted)**
+
+| Outcome | Count | Share of total |
+| --- | --- | --- |
+| Won (paid/accepted) | 14 | 61% |
+| Rejected | 5 | 22% |
+| Duplicate | 2 | 9% |
+| Pending/Other | 2 | 9% |
+| Total | 23 | 100% |
+
+**Table 2. Model attribution (known)**
+
+| Model | Count | Share of total |
+| --- | --- | --- |
+| Codex (wins + duplicates) | 16 | 70% |
+| Claude Code (rejected) | 5 | 22% |
+| Unattributed | 2 | 9% |
+| Total | 23 | 100% |
+
+**Payouts**
 - Total payouts: $1,500
 
-## Attribution Rules
-- Rejected = Claude Code (model: opus 4.5; no wins)
-- Duplicates = Codex (model: codex-5.2-xhigh)
-- Won = Codex (model: codex-5.2-xhigh)
-- Pending/Other = Unattributed
-- Special case: ClickHouse pending/triaged are treated as Won because they paid
-
-## Programs Included
+**Programs included**
 - ClickHouse
 - Immutable
 - Mattermost
@@ -24,52 +57,20 @@ No vulnerability details are disclosed; only program names and outcomes.
 - Zendesk
 - Octopus Deploy
 
-## Outcome Summary (Adjusted)
-- Won (accepted/paid or paid while pending): 14
-- Rejected (Claude Code): 5
-- Duplicate (Codex): 2
-- Pending/Other (unattributed): 2
-
 ## Observations
-- Claude Code (opus 4.5) is too eager to report "bugs" that end up informational or not actionable.
+- Claude Code (opus 4.5) is too eager to report issues that end up informational or non‑actionable.
 - Claude Code is suitable for web app and API testing.
-- Codex (codex-5.2-xhigh) shines when it can read through codebases, especially in open-source repos.
+- Codex (codex-5.2-xhigh) performs best when it can read through codebases, especially in open‑source repos.
 
-## Open-Source Notes
-- Codex found bugs in open-source repos. Some are duplicates.
-- We will disclose those findings once they are triaged or closed.
+## Open‑Source Notes
+- Codex found bugs in open‑source repositories. Some are duplicates.
+- Disclosures will be made once issues are triaged or closed.
 
-## Graphs
+## Limitations
+- No vulnerability details are disclosed, which limits external validation.
+- No API export was available; the dataset is derived from UI snapshots.
+- Some submissions remain unresolved and are reported as Pending/Other.
+- Model attribution is a controlled assignment, not an automated attribution system.
 
-### Status Breakdown (Adjusted)
-```mermaid
-%%{init: {"theme":"base","themeVariables":{"fontFamily":"IBM Plex Sans, Inter, Arial, sans-serif","pieOuterStrokeWidth":"1px","pieOuterStrokeColor":"#1F2937","pieTitleTextSize":"16px","pieSectionTextSize":"12px","pie1":"#0EA5E9","pie2":"#F97316","pie3":"#64748B","pie4":"#94A3B8"}}}%%
-pie title Status Breakdown (Adjusted)
-  "Won (paid/accepted)" : 14
-  "Rejected" : 5
-  "Duplicate" : 2
-  "Pending/Other" : 2
-```
-
-### Model Attribution (Known)
-```mermaid
-%%{init: {"theme":"base","themeVariables":{"fontFamily":"IBM Plex Sans, Inter, Arial, sans-serif","pieOuterStrokeWidth":"1px","pieOuterStrokeColor":"#1F2937","pieTitleTextSize":"16px","pieSectionTextSize":"12px","pie1":"#0EA5E9","pie2":"#F97316","pie3":"#CBD5E1"}}}%%
-pie title Model Attribution (Known)
-  "Codex (Won + Duplicate)" : 16
-  "Claude Code (Rejected)" : 5
-  "Unattributed" : 2
-```
-
-### Outcomes Bar Chart
-```mermaid
-%%{init: {"theme":"base","themeVariables":{"fontFamily":"IBM Plex Sans, Inter, Arial, sans-serif","textColor":"#0F172A","axisLabelColor":"#334155","axisLineColor":"#94A3B8","gridLineColor":"#E2E8F0","barColor":"#0EA5E9","titleColor":"#0F172A"}}}%%
-xychart-beta
-  title "Submission Outcomes (Adjusted)"
-  x-axis ["Won","Rejected","Duplicate","Pending/Other"]
-  y-axis "Count" 0 --> 16
-  bar [14,5,2,2]
-```
-
-## Notes
-- Counts are based on Bugcrowd dashboard snapshots from December 28-30, 2025 and January 12-25, 2026.
-- ClickHouse items shown as triaged/pending are counted as won due to payout.
+## Revision Policy
+This report will be updated as submissions close and disclosures are permitted.
