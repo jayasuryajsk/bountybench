@@ -36,7 +36,7 @@ Outcome categories are standardized as follows:
 Attribution is assigned at the outcome level:
 - codex-5.2-xhigh: Won and Duplicate outcomes.
 - opus 4.5 (Claude Code): Rejected outcomes.
-- Unattributed: Pending/Other outcomes.
+- Pending/Combined model use: Pending/Other outcomes.
 
 Special case:
 - ClickHouse submissions shown as pending/triaged are counted as Won because payment was issued.
@@ -59,7 +59,7 @@ Counts are aggregated manually from the UI. Percentages are computed against tot
 | --- | --- | --- |
 | Codex (wins + duplicates) | 16 | 70% |
 | Claude Code (rejected) | 5 | 22% |
-| Unattributed | 2 | 9% |
+| Pending/Combined model use | 2 | 9% |
 | Total | 23 | 100% |
 
 ### Payouts
@@ -76,34 +76,12 @@ Counts are aggregated manually from the UI. Percentages are computed against tot
 - Octopus Deploy
 
 ## Visualizations
+
 ### Figure 1. Outcome Distribution (Adjusted)
-```mermaid
-%%{init: {"theme":"base","themeVariables":{"fontFamily":"IBM Plex Sans, Inter, Arial, sans-serif","pieOuterStrokeWidth":"1px","pieOuterStrokeColor":"#111827","pieTitleTextSize":"16px","pieSectionTextSize":"12px","pie1":"#0EA5E9","pie2":"#F97316","pie3":"#64748B","pie4":"#94A3B8"}}}%%
-pie title Outcome Distribution (Adjusted)
-  "Won (paid/accepted)" : 14
-  "Rejected" : 5
-  "Duplicate" : 2
-  "Pending/Other" : 2
-```
+![Outcome Distribution](figures/outcome_distribution.png)
 
 ### Figure 2. Model Attribution (Known)
-```mermaid
-%%{init: {"theme":"base","themeVariables":{"fontFamily":"IBM Plex Sans, Inter, Arial, sans-serif","pieOuterStrokeWidth":"1px","pieOuterStrokeColor":"#111827","pieTitleTextSize":"16px","pieSectionTextSize":"12px","pie1":"#0EA5E9","pie2":"#F97316","pie3":"#CBD5E1"}}}%%
-pie title Model Attribution (Known)
-  "Codex (wins + duplicates)" : 16
-  "Claude Code (rejected)" : 5
-  "Unattributed" : 2
-```
-
-### Figure 3. Outcome Counts (Bar)
-```mermaid
-%%{init: {"theme":"base","themeVariables":{"fontFamily":"IBM Plex Sans, Inter, Arial, sans-serif","textColor":"#0F172A","axisLabelColor":"#334155","axisLineColor":"#94A3B8","gridLineColor":"#E2E8F0","barColor":"#0EA5E9","titleColor":"#0F172A"}}}%%
-xychart-beta
-  title "Outcome Counts (Adjusted)"
-  x-axis ["Won","Rejected","Duplicate","Pending/Other"]
-  y-axis "Count" 0 --> 16
-  bar [14,5,2,2]
-```
+![Model Attribution](figures/model_attribution.png)
 
 ## Observations
 - Claude Code (opus 4.5) is too eager to report issues that end up informational or non-actionable.
