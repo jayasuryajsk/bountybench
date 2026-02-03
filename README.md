@@ -1,32 +1,51 @@
 # Bounty Bench
 
-## Abstract
-This report documents a personal benchmark of Bugcrowd submissions. It summarizes outcomes, payouts, and model attribution at a high level without disclosing vulnerability details. The objective is to compare performance signals between two tooling setups in a controlled, non‑disclosing format.
+A documentation-only benchmark of my Bugcrowd submissions, written as a technical report. This repository intentionally omits vulnerability details and retains only program names and outcome categories.
+
+## Executive Summary
+This report summarizes 23 Bugcrowd submissions with a total of $1,500 in payouts. Outcomes are aggregated and mapped to two tooling setups for comparison. A domain-specific adjustment counts paid ClickHouse submissions as wins even if they remain in a pending or triaged state in the UI.
+
+Key results:
+- Wins (paid/accepted) represent 61% of submissions (14 of 23).
+- Rejections represent 22% (5 of 23).
+- Duplicates represent 9% (2 of 23).
+- Pending/Other represents 9% (2 of 23).
+
+## Background
+This benchmark tracks outcomes of real submissions to bug bounty programs with the goal of comparing model-assisted workflows. The emphasis is on outcome categories rather than vulnerability specifics to preserve confidentiality and disclosure obligations.
+
+## Research Questions
+1. How do outcomes distribute across accepted/paid, rejected, duplicate, and pending categories?
+2. How do those outcomes map to model attribution for the two tooling setups?
 
 ## Data Source and Scope
-The dataset is derived from Bugcrowd submissions dashboard snapshots. No API export was used. The reporting window spans December 28-30, 2025 and January 12-25, 2026, with the snapshot point as of January 25, 2026. Only program names and outcome categories are recorded.
+- Source: Bugcrowd submissions dashboard snapshots.
+- Snapshot window: December 28-30, 2025 and January 12-25, 2026.
+- Reporting cut: January 25, 2026.
+- Data captured: program names, outcome categories, and payout totals.
+- Data excluded: vulnerability details, technical proofs, reproduction steps, and private program metadata.
 
 ## Definitions
 Outcome categories are standardized as follows:
 - Won: Accepted or paid submissions. Includes paid submissions still shown as pending/triaged.
 - Rejected: Closed without acceptance.
 - Duplicate: Marked duplicate.
-- Pending/Other: Any remaining in‑progress or unresolved states.
+- Pending/Other: Any remaining in-progress or unresolved states.
 
-Model attribution is assigned at the outcome level:
-- codex-5.2-xhigh: All Won and Duplicate outcomes.
-- opus 4.5 (Claude Code): All Rejected outcomes.
+## Attribution Rules
+Attribution is assigned at the outcome level:
+- codex-5.2-xhigh: Won and Duplicate outcomes.
+- opus 4.5 (Claude Code): Rejected outcomes.
 - Unattributed: Pending/Other outcomes.
 
-## Methods
-The analysis uses manual extraction from the UI and aggregates counts by outcome and model attribution. Percentages are calculated against total submissions (n = 23) and rounded to the nearest whole percent.
-
-A domain-specific adjustment is applied:
+Special case:
 - ClickHouse submissions shown as pending/triaged are counted as Won because payment was issued.
 
-## Results
-**Table 1. Outcome summary (adjusted)**
+## Methods
+Counts are aggregated manually from the UI. Percentages are computed against total submissions (n = 23) and rounded to the nearest whole percent. All findings are non-disclosing and suitable for public documentation.
 
+## Results
+### Outcome Summary (Adjusted)
 | Outcome | Count | Share of total |
 | --- | --- | --- |
 | Won (paid/accepted) | 14 | 61% |
@@ -35,8 +54,7 @@ A domain-specific adjustment is applied:
 | Pending/Other | 2 | 9% |
 | Total | 23 | 100% |
 
-**Table 2. Model attribution (known)**
-
+### Model Attribution (Known)
 | Model | Count | Share of total |
 | --- | --- | --- |
 | Codex (wins + duplicates) | 16 | 70% |
@@ -44,10 +62,10 @@ A domain-specific adjustment is applied:
 | Unattributed | 2 | 9% |
 | Total | 23 | 100% |
 
-**Payouts**
+### Payouts
 - Total payouts: $1,500
 
-**Programs included**
+### Programs Included
 - ClickHouse
 - Immutable
 - Mattermost
@@ -57,13 +75,43 @@ A domain-specific adjustment is applied:
 - Zendesk
 - Octopus Deploy
 
-## Observations
-- Claude Code (opus 4.5) is too eager to report issues that end up informational or non‑actionable.
-- Claude Code is suitable for web app and API testing.
-- Codex (codex-5.2-xhigh) performs best when it can read through codebases, especially in open‑source repos.
+## Visualizations
+### Figure 1. Outcome Distribution (Adjusted)
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"IBM Plex Sans, Inter, Arial, sans-serif","pieOuterStrokeWidth":"1px","pieOuterStrokeColor":"#111827","pieTitleTextSize":"16px","pieSectionTextSize":"12px","pie1":"#0EA5E9","pie2":"#F97316","pie3":"#64748B","pie4":"#94A3B8"}}}%%
+pie title Outcome Distribution (Adjusted)
+  "Won (paid/accepted)" : 14
+  "Rejected" : 5
+  "Duplicate" : 2
+  "Pending/Other" : 2
+```
 
-## Open‑Source Notes
-- Codex found bugs in open‑source repositories. Some are duplicates.
+### Figure 2. Model Attribution (Known)
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"IBM Plex Sans, Inter, Arial, sans-serif","pieOuterStrokeWidth":"1px","pieOuterStrokeColor":"#111827","pieTitleTextSize":"16px","pieSectionTextSize":"12px","pie1":"#0EA5E9","pie2":"#F97316","pie3":"#CBD5E1"}}}%%
+pie title Model Attribution (Known)
+  "Codex (wins + duplicates)" : 16
+  "Claude Code (rejected)" : 5
+  "Unattributed" : 2
+```
+
+### Figure 3. Outcome Counts (Bar)
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"IBM Plex Sans, Inter, Arial, sans-serif","textColor":"#0F172A","axisLabelColor":"#334155","axisLineColor":"#94A3B8","gridLineColor":"#E2E8F0","barColor":"#0EA5E9","titleColor":"#0F172A"}}}%%
+xychart-beta
+  title "Outcome Counts (Adjusted)"
+  x-axis ["Won","Rejected","Duplicate","Pending/Other"]
+  y-axis "Count" 0 --> 16
+  bar [14,5,2,2]
+```
+
+## Observations
+- Claude Code (opus 4.5) is too eager to report issues that end up informational or non-actionable.
+- Claude Code is suitable for web app and API testing.
+- Codex (codex-5.2-xhigh) performs best when it can read through codebases, especially in open-source repositories.
+
+## Open-Source Notes
+- Codex found bugs in open-source repositories. Some are duplicates.
 - Disclosures will be made once issues are triaged or closed.
 
 ## Limitations
@@ -71,6 +119,14 @@ A domain-specific adjustment is applied:
 - No API export was available; the dataset is derived from UI snapshots.
 - Some submissions remain unresolved and are reported as Pending/Other.
 - Model attribution is a controlled assignment, not an automated attribution system.
+
+## Ethical and Disclosure Considerations
+This report is designed to respect program confidentiality and coordinated disclosure timelines. It is intended for high-level benchmarking and does not include technical exploit details or reproducible steps.
+
+## Future Work
+- Update counts as pending submissions close.
+- Add per-program outcome tallies once disclosure constraints permit.
+- Publish redacted writeups after triage/closure approvals.
 
 ## Revision Policy
 This report will be updated as submissions close and disclosures are permitted.
